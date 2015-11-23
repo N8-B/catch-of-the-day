@@ -93,7 +93,6 @@ var App = React.createClass({
   }
 });
 
-
 /*
   Fish (<Fish />)
 */
@@ -159,6 +158,9 @@ var AddFishForm = React.createClass({
   Header (<Header />)
 */
 var Header = React.createClass({
+  propTypes: {
+    tagline: React.PropTypes.string.isRequired
+  },
   render: function() {
     return (
       <header className="top">
@@ -180,6 +182,11 @@ var Header = React.createClass({
   Order (<Order />)
 */
 var Order = React.createClass({
+  propTypes: {
+    removeFromOrder: React.PropTypes.func.isRequired,
+    fishes: React.PropTypes.object.isRequired,
+    order: React.PropTypes.object.isRequired
+  },
   renderOrder: function (key) {
     var fish = this.props.fishes[key];
     var count = this.props.order[key];
@@ -192,7 +199,10 @@ var Order = React.createClass({
     return (
       <li key={key}>
         <span>
-          <span key={count}>{count} </span>
+          <CSSTransitionGroup component="span" transitionName="count" transitionLeaveTimeout={250} transitionEnterTimeout={250} className="count">
+            <span key={count}>{count}</span>
+          </CSSTransitionGroup>
+
           lbs {fish.name} {removeButton}
         </span>
         <span className="price">{h.formatPrice(count * fish.price)}</span>
@@ -214,7 +224,7 @@ var Order = React.createClass({
     }, 0);
 
     return (
-      <div className="prder-wrap">
+      <div className="order-wrap">
         <h2 className="order-title">Your Order</h2>
         <CSSTransitionGroup
           className="order"
@@ -238,6 +248,13 @@ var Order = React.createClass({
   Inventory (<Inventoruy />)
 */
 var Inventory = React.createClass({
+  propTypes: {
+    fishes: React.PropTypes.object.isRequired,
+    linkState: React.PropTypes.func.isRequired,
+    addFish: React.PropTypes.func.isRequired,
+    loadSamples: React.PropTypes.func.isRequired,
+    removeFish: React.PropTypes.func.isRequired
+  },
   renderInventory: function (key) {
     var linkState = this.props.linkState;
 
